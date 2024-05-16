@@ -53,7 +53,7 @@ import com.exam.jp.guidomia.util.shortenPrice
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpandableCard(car: Car) {
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(

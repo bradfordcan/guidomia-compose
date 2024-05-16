@@ -81,4 +81,5 @@ dependencies {
     implementation (libs.androidx.preference.ktx)
 
     implementation (libs.androidx.material.icons.extended)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }
