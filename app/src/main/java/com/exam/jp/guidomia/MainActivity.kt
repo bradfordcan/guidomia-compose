@@ -42,6 +42,8 @@ class MainActivity : ComponentActivity() {
                         cars.clear()
                         if (carsListState.cars.isNotEmpty()) {
                             cars.addAll(carsListState.cars)
+                            // expand first item
+                            cars[0].expanded = true
                         }
                     }
                     CarsScreen(

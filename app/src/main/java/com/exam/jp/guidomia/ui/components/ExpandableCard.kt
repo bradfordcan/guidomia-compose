@@ -52,8 +52,9 @@ import com.exam.jp.guidomia.util.shortenPrice
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpandableCard(car: Car) {
+fun ExpandableCard(car: Car, index: Int, onItemClicked: (position: Int) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
+    expanded = car.expanded
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(
@@ -66,7 +67,8 @@ fun ExpandableCard(car: Car) {
             .fillMaxWidth()
             .background(colorResource(id = R.color.light_gray)),
         onClick = {
-            expanded = !expanded
+            // expanded = !expanded
+            onItemClicked(index)
         }
     ) {
         Row(
@@ -236,7 +238,10 @@ fun CardPreview() {
                 arrayListOf("Bad direction"),
                 3,
                 false
-            )
-        )
+            ),
+            0
+        ) {
+
+        }
     }
 }

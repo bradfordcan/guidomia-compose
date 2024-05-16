@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -44,8 +46,15 @@ fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
     val filterModel = remember { mutableStateOf("Any Model") }
 
     fun filter() {
-        
+
     }
+
+    fun <T> SnapshotStateList<T>.swapList(newList: List<T>){
+        clear()
+        addAll(newList)
+    }
+    val carsList = remember { mutableStateListOf<Car>() }
+    carsList.swapList(cars)
 
     Scaffold(
         topBar = {
@@ -109,8 +118,15 @@ fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
-                itemsIndexed(cars) { index, item ->
-                    ExpandableCard(car = item)
+                itemsIndexed(carsList) { index, item ->
+                    ExpandableCard(car = item, index) { positionClicked ->
+                        // reset expanded values
+                        cars.forEach { updatedCar ->
+                            updatedCar.expanded = false
+                        }
+                        cars[positionClicked].expanded = true
+                        carsList.swapList(cars)
+                    }
                     if (index < cars.lastIndex)
                         Divider(
                             modifier = Modifier.padding(16.dp),
