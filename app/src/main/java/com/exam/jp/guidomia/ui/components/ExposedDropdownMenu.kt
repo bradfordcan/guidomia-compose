@@ -33,7 +33,7 @@ import com.exam.jp.guidomia.R
 // reference: https://alexzh.com/jetpack-compose-dropdownmenu/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenu(default: String, items: List<String>) {
+fun ExposedDropdownMenu(default: String, items: List<String>, onFilter: (filter: String) -> Unit) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
     val finalList = listOf(default) + items
@@ -70,6 +70,7 @@ fun ExposedDropdownMenu(default: String, items: List<String>) {
                             selectedText = item
                             expanded = false
                             Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            onFilter(item)
                         }
                     )
                 }
@@ -79,7 +80,7 @@ fun ExposedDropdownMenu(default: String, items: List<String>) {
 }
 
 @Composable
-fun CarFilter(make: List<String>, model: List<String>) {
+fun CarFilter(make: List<String>, model: List<String>, onFilterMake: (make: String) -> Unit, onFilterModel: (model: String) -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
@@ -92,7 +93,11 @@ fun CarFilter(make: List<String>, model: List<String>) {
             fontSize = 20.sp,
             modifier = Modifier.padding(PaddingValues(start = 24.dp, top = 16.dp))
         )
-        ExposedDropdownMenu("Any Make", items = make)
-        ExposedDropdownMenu("Any Model", items = model)
+        ExposedDropdownMenu("Any Make", items = make) {
+            onFilterMake(it)
+        }
+        ExposedDropdownMenu("Any Model", items = model) {
+            onFilterModel(it)
+        }
     }
 }

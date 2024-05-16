@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -18,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +39,14 @@ import com.exam.jp.guidomia.ui.theme.GuidomiaTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
+    val carsCopy = arrayListOf(cars)
+    val filterMake = remember { mutableStateOf("Any Make") }
+    val filterModel = remember { mutableStateOf("Any Model") }
+
+    fun filter() {
+        
+    }
+
     Scaffold(
         topBar = {
             val context = LocalContext.current
@@ -86,7 +93,16 @@ fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
             )
 
             // Car Filter
-            CarFilter(make = cars.map { it.make }, model = cars.map { it.model })
+            CarFilter(
+                make = cars.map { it.make },
+                model = cars.map { it.model },
+                onFilterMake = {
+                    filterMake.value = it
+                    filter()
+                }, onFilterModel = {
+                    filterModel.value = it
+                    filter()
+                })
 
             // Cars List
             LazyColumn(
