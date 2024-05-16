@@ -41,13 +41,10 @@ import com.exam.jp.guidomia.ui.theme.GuidomiaTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
-    val carsCopy = arrayListOf(cars)
+    val carsCopy = arrayListOf<Car>().apply { addAll(cars) }
     val filterMake = remember { mutableStateOf("Any Make") }
     val filterModel = remember { mutableStateOf("Any Model") }
-
-    fun filter() {
-
-    }
+    val filteredList: ArrayList<Car> = ArrayList()
 
     fun <T> SnapshotStateList<T>.swapList(newList: List<T>){
         clear()
@@ -55,6 +52,40 @@ fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
     }
     val carsList = remember { mutableStateListOf<Car>() }
     carsList.swapList(cars)
+
+    fun filter() {
+        filteredList.clear()
+        if (filterMake.value.lowercase().contains("Any Make".lowercase())) {
+            filterMake.value = ""
+        }
+
+        if (filterModel.value.lowercase().contains("Any Model".lowercase())) {
+            filterModel.value = ""
+        }
+
+        if(filterMake.value.isEmpty() && filterModel.value.isEmpty()) {
+            filteredList.addAll(carsCopy)
+        } else {
+            carsCopy.forEach { carCopy ->
+                if (filterMake.value.isEmpty() && filterModel.value.isNotEmpty()) {
+                    if (carCopy.model.lowercase().contains(filterModel.value.lowercase())) {
+                        filteredList.add(carCopy)
+                    }
+                } else if (filterModel.value.isEmpty() && filterMake.value.isNotEmpty()) {
+                    if (carCopy.make.lowercase().contains(filterMake.value.lowercase())) {
+                        filteredList.add(carCopy)
+                    }
+                } else {
+                    if (carCopy.model.lowercase().contains(filterModel.value.lowercase()) && carCopy.make.lowercase()
+                            .contains(filterMake.value.lowercase())
+                    ) {
+                        filteredList.add(carCopy)
+                    }
+                }
+            }
+        }
+        carsList.swapList(filteredList)
+    }
 
     Scaffold(
         topBar = {
