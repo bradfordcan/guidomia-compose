@@ -33,10 +33,11 @@ import com.exam.jp.guidomia.R
 // reference: https://alexzh.com/jetpack-compose-dropdownmenu/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExposedDropdownMenu(items: List<String>) {
+fun ExposedDropdownMenu(default: String, items: List<String>) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(items[0]) }
+    val finalList = listOf(default) + items
+    var selectedText by remember { mutableStateOf(finalList[0]) }
 
     Box(
         modifier = Modifier
@@ -62,7 +63,7 @@ fun ExposedDropdownMenu(items: List<String>) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                items.forEach { item ->
+                finalList.forEach { item ->
                     DropdownMenuItem(
                         text = { Text(text = item) },
                         onClick = {
@@ -91,7 +92,7 @@ fun CarFilter(make: List<String>, model: List<String>) {
             fontSize = 20.sp,
             modifier = Modifier.padding(PaddingValues(start = 24.dp, top = 16.dp))
         )
-        ExposedDropdownMenu(items = arrayListOf("Item 1", "Item 2"))
-        ExposedDropdownMenu(items = arrayListOf("Item 1", "Item 2"))
+        ExposedDropdownMenu("Any Make", items = make)
+        ExposedDropdownMenu("Any Model", items = model)
     }
 }

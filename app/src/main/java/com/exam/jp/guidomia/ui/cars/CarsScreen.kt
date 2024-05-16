@@ -5,9 +5,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -36,7 +39,7 @@ import com.exam.jp.guidomia.ui.theme.GuidomiaTheme
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarsScreen(cars: List<Car>) {
+fun CarsScreen(paddingValues: PaddingValues, cars: List<Car>) {
     Scaffold(
         topBar = {
             val context = LocalContext.current
@@ -83,7 +86,7 @@ fun CarsScreen(cars: List<Car>) {
             )
 
             // Car Filter
-            CarFilter(make = arrayListOf(), model = arrayListOf())
+            CarFilter(make = cars.map { it.make }, model = cars.map { it.model })
 
             // Cars List
             LazyColumn(
@@ -110,6 +113,7 @@ fun CarsScreen(cars: List<Car>) {
 fun CarsScreenPreview() {
     GuidomiaTheme {
         CarsScreen(
+            PaddingValues(),
             cars = arrayListOf(
                 Car(
                     1,
