@@ -43,6 +43,9 @@ class MainActivity : ComponentActivity() {
                         if (carsListState.cars.isNotEmpty()) {
                             cars.addAll(carsListState.cars)
                             // expand first item
+                            cars.mapIndexed { index, car ->
+                                car.id = index.toLong()
+                            }
                             cars[0].expanded = true
                         }
                     }

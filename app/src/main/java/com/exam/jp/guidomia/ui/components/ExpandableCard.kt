@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,6 +66,7 @@ fun ExpandableCard(car: Car, index: Int, onItemClicked: (position: Int) -> Unit)
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .padding(PaddingValues(start = 16.dp, end = 16.dp))
             .background(colorResource(id = R.color.light_gray)),
         onClick = {
             // expanded = !expanded
@@ -77,7 +79,7 @@ fun ExpandableCard(car: Car, index: Int, onItemClicked: (position: Int) -> Unit)
                 .semantics(mergeDescendants = true) {},
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CarImage(1)
+            CarImage(car.id)
             Spacer(Modifier.width(8.dp))
             Column {
                 Text(
